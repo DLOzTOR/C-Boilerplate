@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.embeddedhtml": "html",
+    "stdio.h": "c",
+    "vector2.h": "c",
+    "stdlib.h": "c",
+    "stb_image.h": "c",
+    "io.h": "c",
+    "glew.h": "c",
+    "window.h": "c",
+    "gl_itit.h": "c",
+    "vbo.h": "c"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
+}

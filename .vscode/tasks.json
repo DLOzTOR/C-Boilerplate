@@ -1,0 +1,95 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+        "label": "cmake",
+          "type": "shell",
+          "command": "cmake",
+          "args": [
+              "-G",
+              "MinGW Makefiles",
+              "-S",
+              ".",
+              "-B",
+              "out"
+          ],
+          "group": {
+              "kind": "",
+              "isDefault": true
+          },
+          
+          "problemMatcher": []
+    },
+    {
+        "label": "mingw32-make",
+          "type": "shell",
+          "command": "mingw32-make",
+          "args": [
+              "-C",
+              "out"
+          ],
+          "group": {
+              "kind": "",
+              "isDefault": true
+          },
+          "dependsOn": "cmake",
+          "problemMatcher": []
+    },
+    {
+        "label": "build and run shell cmake",
+        "type": "shell",
+        "command": "cmd.exe",
+          "args": [
+              "/c",
+              "start",
+              "cmd.exe",
+              "/k",
+              "${workspaceFolder}/out/program.exe"
+          ],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "options": {
+                "cwd": "${workspaceFolder}/out"
+            },
+        "dependsOn": "mingw32-make",
+        "problemMatcher": []
+    },
+      {
+          "label": "build gcc",
+          "type": "shell",
+          "command": "gcc",
+          "args": [
+              "-g",
+              "src/main.c",
+              "-o",
+              "out/program.exe"
+          ],
+          "group": {
+              "kind": "",
+              "isDefault": true
+          },
+          
+          "problemMatcher": []
+      },
+      {
+          "label": "build and run shell gcc",
+          "type": "shell",
+          "command": "start",
+            "args": [
+                "/c",
+                "start",
+                "cmd.exe",
+                "/k",
+                "${workspaceFolder}/out/program.exe"
+            ],
+          "group": {
+              "kind": "",
+              "isDefault": true
+          },
+          "dependsOn": "build gcc",
+          "problemMatcher": []
+      }
+  ]
+}
