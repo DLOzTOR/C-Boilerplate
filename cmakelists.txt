@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(BoilerplateCProject)
+project(WinApiHelloWorld)
 
 # Specify C standard
 set(CMAKE_C_STANDARD 11)
@@ -10,15 +10,27 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(RESOURCE_DIR "${CMAKE_SOURCE_DIR}/resources")
 set(DEST_DIR "${CMAKE_BINARY_DIR}/resources")
 
-# Add target and copy resources only when needed
+# Gather all resource files
 file(GLOB RESOURCE_FILES "${RESOURCE_DIR}/*")
-add_custom_command(
-  OUTPUT ${RESOURCE_FILES}
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${RESOURCE_DIR} ${DEST_DIR}
-  DEPENDS ${RESOURCE_FILES}
-  COMMENT "Copying updated resources to build folder"
-)
-add_custom_target(copy_resources ALL DEPENDS ${RESOURCE_FILES})
+
+# Add custom command to copy resources if changed
+foreach(RESOURCE_FILE ${RESOURCE_FILES})
+  get_filename_component(FILE_NAME ${RESOURCE_FILE} NAME)
+  set(DEST_FILE "${DEST_DIR}/${FILE_NAME}")
+
+  add_custom_command(
+    OUTPUT ${DEST_FILE}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RESOURCE_FILE} ${DEST_FILE}
+    DEPENDS ${RESOURCE_FILE}
+    COMMENT "Copying ${FILE_NAME} if it has changed"
+  )
+
+  # Append the output file to a list of copied files
+  list(APPEND COPIED_FILES ${DEST_FILE})
+endforeach()
+
+# Create a target for copying all resources
+add_custom_target(copy_resources ALL DEPENDS ${COPIED_FILES})
 
 # Add executable
 add_executable(program ${SRC_DIR}/main.c)
